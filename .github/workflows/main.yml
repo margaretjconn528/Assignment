@@ -5,8 +5,8 @@ push:
 branches:
 - main
 paths:
-- 'lib/**'
-- 'android/**'
+- 'lib/'
+- 'android/'
 - 'pubspec.yaml'
 
 permissions:
@@ -16,7 +16,6 @@ jobs:
 build:
 runs-on: ubuntu-22.04
 
-```
 steps:
   - name: Checkout repository
     uses: actions/checkout@v4
@@ -69,4 +68,3 @@ steps:
       prerelease: false
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
