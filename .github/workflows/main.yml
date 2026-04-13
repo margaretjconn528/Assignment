@@ -2,10 +2,10 @@ name: 🛠 Android CI / Build & Release APK
 
 on:
 push:
-branches: [ main ]
-tags:    [ 'v*.*.*' ]
+branches: [main]
+tags: ['v*.*.*']
 pull_request:
-branches: [ main ]
+branches: [main]
 
 permissions:
 contents: write
@@ -21,11 +21,9 @@ runs-on: ubuntu-latest
 
 ```
 steps:
-  # 📂 Checkout
   - name: 📂 Checkout code
     uses: actions/checkout@v3
 
-  # 🚀 Cache Pub Dependencies
   - name: 🚀 Cache pub deps
     uses: actions/cache@v3
     with:
@@ -34,14 +32,12 @@ steps:
       restore-keys: |
         ${{ runner.os }}-pub-
 
-  # ☕ Setup Java
-  - name: ☕️ Setup Java (Temurin 17)
+  - name: ☕ Setup Java (Temurin 17)
     uses: actions/setup-java@v3
     with:
       distribution: temurin
       java-version: '17'
 
-  # ⚡ Cache Gradle
   - name: ⚡ Cache Gradle
     uses: actions/cache@v3
     with:
@@ -52,14 +48,12 @@ steps:
       restore-keys: |
         ${{ runner.os }}-gradle-
 
-  # 🦋 Setup Flutter
   - name: 🦋 Setup Flutter
     uses: subosito/flutter-action@v2
     with:
       channel: stable
       cache: true
 
-  # ⚡ Cache Flutter Build
   - name: ⚡ Cache Flutter build
     uses: actions/cache@v3
     with:
@@ -70,21 +64,17 @@ steps:
       restore-keys: |
         ${{ runner.os }}-flutter-
 
-  # 📥 Dependencies
   - name: 📥 Get dependencies
     run: flutter pub get
 
-  # 🏗️ Build APK
   - name: 🏗️ Build APKs
     run: flutter build apk --release --split-per-abi
 
-  # 📦 Collect APKs
   - name: 📦 Prepare artifacts
     run: |
       mkdir -p artifacts
       cp build/app/outputs/flutter-apk/*.apk artifacts/
 
-  # 🏷️ Release (Only for tags)
   - name: 🏷️ Create or update Release
     if: startsWith(github.ref, 'refs/tags/v')
     uses: ncipollo/release-action@v1.16.0
