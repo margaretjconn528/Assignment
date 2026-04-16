@@ -1,0 +1,45 @@
+name: Build & Upload Latest APK
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout
+      - uses: actions/checkout@v4
+
+      # 2. Java
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # 3. Flutter
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.1'
+
+      # 4. Dependencies
+      - run: flutter pub get
+
+      # 5. Build APK
+      - run: flutter build apk --release
+
+      # 6. Upload to SAME release
+      - name: Upload Latest APK
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest APK
+          files: build/app/outputs/flutter-apk/app-release.apk
+          draft: false
+          prerelease: false
+          fail_on_unmatched_files: true
