@@ -11,12 +11,33 @@ class ResultsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final lotteryProvider = context.watch<LotteryProvider>();
-    final winningNumbers = lotteryProvider.winningNumbers ?? [1, 2, 3, 4, 5];
-    final selectedNumbers = lotteryProvider.selectedNumbers.isEmpty ? [1, 2, 3, 4, 30] : lotteryProvider.selectedNumbers;
+    final winningNumbers = lotteryProvider.winningNumbers;
+    final selectedNumbers = lotteryProvider.selectedNumbers;
     bool isWinner = lotteryProvider.isWinner;
-    if (lotteryProvider.winningNumbers == null) {
-      isWinner = selectedNumbers.length == winningNumbers.length &&
-          selectedNumbers.every((n) => winningNumbers.contains(n));
+
+    if (winningNumbers == null) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(backgroundColor: Colors.white, elevation: 0),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.info_outline, size: 64, color: AppColors.primaryBlue),
+              const SizedBox(height: 16),
+              Text(
+                'No results yet',
+                style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: const Color(0xFF001F5B)),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Play a game to see the latest draw!',
+                style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey),
+              ),
+            ],
+          ),
+        ),
+      );
     }
     final date = DateTime.now();
 

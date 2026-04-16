@@ -88,10 +88,22 @@ class _HomePageState extends State<HomePage> {
                           color: const Color(0xFF1E56D1),
                           textColor: Colors.white,
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const ResultsPage()),
-                            );
+                            if (lotteryProvider.winningNumbers != null) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const ResultsPage()),
+                              );
+                            } else if (lotteryProvider.selectedNumbers.length == 5) {
+                                lotteryProvider.play();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const ResultsPage()),
+                                );
+                            } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Please select 5 numbers to play first!')),
+                                );
+                            }
                           },
                         ),
                       ),

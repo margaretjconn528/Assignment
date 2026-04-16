@@ -29,7 +29,10 @@ class LotteryProvider with ChangeNotifier {
       _walletBalance -= 10.0;
     }
 
-    _winningNumbers = [1, 2, 3, 4, 5];
+    //for testing
+    //_winningNumbers = [1, 2, 3, 4, 5];
+
+    _winningNumbers = List.generate(5, (_) => Random().nextInt(50) + 1);
     
     _isWinner = true;
     for (int n in _selectedNumbers) {
